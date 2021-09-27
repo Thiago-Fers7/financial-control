@@ -36,6 +36,23 @@ class EntriesController {
 
     res.status(200).json({ entrie });
   }
+
+  async update(req, res) {
+    const { id } = req.params;
+    const { name, description, value } = req.body;
+
+    if (!name || !description || !value) {
+      return res.status(400).json({ error: 'Informe o nome, descrição e valor antes de continuar!' });
+    }
+
+    if (!Number(value)) {
+      return res.status(400).json({ error: 'Valor digitado não é válido!' });
+    }
+
+    const entrieUpdated = await EntriesRepository.update(id, { name, description, value });
+
+    res.status(200).json(entrieUpdated);
+  }
 }
 
 module.exports = new EntriesController();

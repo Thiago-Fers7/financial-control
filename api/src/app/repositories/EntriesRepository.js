@@ -1,4 +1,4 @@
-const entries = [
+let entries = [
   {
     id: '1',
     name: 'Salário',
@@ -56,6 +56,31 @@ class EntriesRepository {
       entries.push(newEntrie);
 
       resolve(newEntrie);
+    });
+  }
+
+  update(id, { name, description, value }) {
+    return new Promise((resolve) => {
+      let entrieUpdated = {};
+
+      entries = entries.map((entrie) => {
+        if (entrie.id === String(id)) {
+          const newValues = {
+            ...entrie,
+            name,
+            description,
+            value,
+          };
+
+          entrieUpdated = newValues;
+
+          return newValues;
+        }
+
+        return entrie;
+      });
+
+      resolve(entrieUpdated);
     });
   }
 }

@@ -6,5 +6,6 @@ const router = Router();
 router.get('/entries', EntriesController.index);
 router.get('/entries/:id', EntriesController.show);
 router.post('/entries', EntriesController.store);
+router.put('/entries/:id', EntriesController.update);
 
 module.exports = { router };
