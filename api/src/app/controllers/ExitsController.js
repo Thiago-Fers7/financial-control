@@ -1,24 +1,24 @@
-const EntriesRepository = require('../repositories/EntriesRepository');
+const ExitsRepository = require('../repositories/ExitsRepository');
 
-class EntriesController {
+class ExitsController {
   async index(req, res) {
     const { order } = req.query;
 
-    const entries = await EntriesRepository.findAll(order);
+    const exits = await ExitsRepository.findAll(order);
 
-    res.status(200).json(entries);
+    res.status(200).json(exits);
   }
 
   async show(req, res) {
     const { id } = req.params;
 
-    const entrie = await EntriesRepository.findById(id);
+    const exit = await ExitsRepository.findById(id);
 
-    if (!entrie) {
-      return res.status(404).json({ error: 'Entrie not found' });
+    if (!exit) {
+      return res.status(404).json({ error: 'Exit not found' });
     }
 
-    res.status(200).json(entrie);
+    res.status(200).json(exit);
   }
 
   async store(req, res) {
@@ -32,9 +32,9 @@ class EntriesController {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const entrie = await EntriesRepository.create({ name, description, value });
+    const exit = await ExitsRepository.create({ name, description, value });
 
-    res.status(200).json(entrie);
+    res.status(200).json(exit);
   }
 
   async update(req, res) {
@@ -49,18 +49,18 @@ class EntriesController {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const entrieUpdated = await EntriesRepository.update(id, { name, description, value });
+    const exitUpdated = await ExitsRepository.update(id, { name, description, value });
 
-    res.status(200).json(entrieUpdated);
+    res.status(200).json(exitUpdated);
   }
 
   async delete(req, res) {
     const { id } = req.params;
 
-    await EntriesRepository.delete(id);
+    await ExitsRepository.delete(id);
 
     res.sendStatus(204);
   }
 }
 
-module.exports = new EntriesController();
+module.exports = new ExitsController();
