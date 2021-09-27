@@ -53,6 +53,14 @@ class EntriesController {
 
     res.status(200).json(entrieUpdated);
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    await EntriesRepository.delete(id);
+
+    res.sendStatus(204);
+  }
 }
 
 module.exports = new EntriesController();

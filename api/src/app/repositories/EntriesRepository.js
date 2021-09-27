@@ -83,6 +83,14 @@ class EntriesRepository {
       resolve(entrieUpdated);
     });
   }
+
+  delete(id) {
+    return new Promise((resolve) => {
+      entries = entries.filter((entrie) => entrie.id !== id);
+
+      resolve();
+    });
+  }
 }
 
 module.exports = new EntriesRepository();
