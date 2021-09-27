@@ -1,9 +1,13 @@
 const express = require('express');
 require('express-async-errors');
+const { createTables } = require('./database/schema');
 
 const { router } = require('./routes');
 
 const PORT = 3000;
+
+// Create Database and Tables - drop: true for delete, false for not delete
+createTables({ drop: false });
 
 const app = express();
 
