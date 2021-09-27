@@ -1,95 +1,52 @@
-let exits = [
-  {
-    id: '1',
-    name: 'Água',
-    description: 'Pagamento de água',
-    value: 150.62,
-  },
-  {
-    id: '2',
-    name: 'Luz',
-    description: 'Pagamento de luz',
-    value: 350,
-  },
-  {
-    id: '3',
-    name: 'Internet',
-    description: 'Pagamento de internet',
-    value: 99.99,
-  },
-];
+const db = require('../../database');
 
 class ExitsRepository {
-  findAll(order = 'asc') {
-    return new Promise((resolve) => {
-      const sortedExits = exits.sort((a, b) => {
-        if (order.toLocaleLowerCase() === 'desc') {
-          return a.name < b.name ? 1 : -1;
-        }
+  async findAll(order = 'asc') {
+    const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-        return a.name > b.name ? 1 : -1;
-      });
+    const rows = await db.query(`
+      SELECT * FROM exits ORDER BY name ${direction}
+    `);
 
-      resolve(sortedExits);
-    });
+    return rows;
   }
 
-  findById(id) {
-    return new Promise((resolve) => {
-      const exit = exits.find((exitObj) => exitObj.id === id);
+  async findById(id) {
+    const [row] = await db.query(`
+      SELECT * FROM exits WHERE id = $1
+    `, [id]);
 
-      resolve(exit);
-    });
+    return row;
   }
 
-  create({ name, description, value }) {
-    return new Promise((resolve) => {
-      const lastExitIndex = exits.length;
+  async create({ name, description, value }) {
+    const [row] = await db.query(`
+      INSERT INTO exits (
+        name, description, value
+      ) VALUES (
+        $1, $2, $3
+      )
+      RETURNING *
+    `, [name, description, value]);
 
-      const newExit = {
-        id: String(+lastExitIndex + 1),
-        name,
-        description,
-        value: Number(value),
-      };
-
-      exits.push(newExit);
-
-      resolve(newExit);
-    });
+    return row;
   }
 
-  update(id, { name, description, value }) {
-    return new Promise((resolve) => {
-      let exitUpdated = {};
+  async update(id, { name, description, value }) {
+    const [row] = await db.query(`
+      UPDATE exits
+      SET name = $1, description = $2, value = $3
+      WHERE id = $4
+      RETURNING *
+    `, [name, description, value, id]);
 
-      exits = exits.map((exit) => {
-        if (exit.id === String(id)) {
-          const newValues = {
-            ...exit,
-            name,
-            description,
-            value,
-          };
-
-          exitUpdated = newValues;
-
-          return newValues;
-        }
-
-        return exit;
-      });
-
-      resolve(exitUpdated);
-    });
+    return row;
   }
 
-  delete(id) {
-    return new Promise((resolve) => {
-      exits = exits.filter((exit) => exit.id !== id);
+  async delete(id) {
+    const deleteOp = await db.query('DELETE FROM exits WHERE id = $1', [id]);
 
-      resolve();
-    });
+    return deleteOp;
   }
 }
 

@@ -1,95 +1,51 @@
-let entries = [
-  {
-    id: '1',
-    name: 'Salário',
-    description: 'Salário Panco',
-    value: 1500.51,
-  },
-  {
-    id: '2',
-    name: 'Site',
-    description: 'Site desenvolvido para o Thiago',
-    value: 350,
-  },
-  {
-    id: '3',
-    name: 'Sistema',
-    description: 'Site desenvolvido para o Luiz',
-    value: 5500,
-  },
-];
+const db = require('../../database/index');
 
 class EntriesRepository {
-  findAll(order = 'asc') {
-    return new Promise((resolve) => {
-      const sortedEntries = entries.sort((a, b) => {
-        if (order.toLocaleLowerCase() === 'desc') {
-          return a.name < b.name ? 1 : -1;
-        }
+  async findAll(order = 'asc') {
+    const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-        return a.name > b.name ? 1 : -1;
-      });
+    const rows = await db.query(`
+      SELECT * FROM entries ORDER BY name ${direction}
+    `);
 
-      resolve(sortedEntries);
-    });
+    return rows;
   }
 
-  findById(id) {
-    return new Promise((resolve) => {
-      const entrie = entries.find((entrieObj) => entrieObj.id === id);
+  async findById(id) {
+    const [row] = await db.query('SELECT * FROM entries WHERE id = $1', [id]);
 
-      resolve(entrie);
-    });
+    return row;
   }
 
-  create({ name, description, value }) {
-    return new Promise((resolve) => {
-      const lastEntrieIndex = entries.length;
+  async create({ name, description, value }) {
+    const [row] = await db.query(`
+      INSERT INTO entries (
+        name, description, value
+      ) values (
+        $1, $2, $3
+      )
 
-      const newEntrie = {
-        id: String(+lastEntrieIndex + 1),
-        name,
-        description,
-        value: Number(value),
-      };
+      RETURNING *
+    `, [name, description, value]);
 
-      entries.push(newEntrie);
-
-      resolve(newEntrie);
-    });
+    return row;
   }
 
-  update(id, { name, description, value }) {
-    return new Promise((resolve) => {
-      let entrieUpdated = {};
+  async update(id, { name, description, value }) {
+    const [row] = await db.query(`
+      UPDATE entries
+      SET name = $1, description = $2, value = $3
+      WHERE id = $4
+      RETURNING *
+   `, [name, description, value, id]);
 
-      entries = entries.map((entrie) => {
-        if (entrie.id === String(id)) {
-          const newValues = {
-            ...entrie,
-            name,
-            description,
-            value,
-          };
-
-          entrieUpdated = newValues;
-
-          return newValues;
-        }
-
-        return entrie;
-      });
-
-      resolve(entrieUpdated);
-    });
+    return row;
   }
 
-  delete(id) {
-    return new Promise((resolve) => {
-      entries = entries.filter((entrie) => entrie.id !== id);
+  async delete(id) {
+    const deleteOp = await db.query('DELETE FROM entries WHERE id = $1', [id]);
 
-      resolve();
-    });
+    return deleteOp;
   }
 }
 
