@@ -11,8 +11,9 @@ export const GlobalStyles = createGlobalStyle`
   :root {
     // COLORS ====================================================
     --gray-very-light: #e8e8f0;
-    --gray-light-500: #d3d3d3;
+    --hover-link-background: #e2e2e2;
     --common-text: #393939;
+    --background-header: #fff;
 
     // Others
     --radius-button: 0.4rem;

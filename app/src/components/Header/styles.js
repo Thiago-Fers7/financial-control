@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.header`
   width: 100%;
   height: 7rem;
+  background: var(--background-header);
 
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
@@ -45,7 +46,7 @@ export const Navigation = styled.nav`
         transition: 0.1s;
 
         &:hover, &.active {
-          background: var(--gray-light-500);
+          background: var(--hover-link-background);
         }
       }
     }
