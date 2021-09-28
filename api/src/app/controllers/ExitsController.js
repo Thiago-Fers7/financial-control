@@ -22,34 +22,42 @@ class ExitsController {
   }
 
   async store(req, res) {
-    const { name, description, value } = req.body;
+    const {
+      name, description, value, due_date,
+    } = req.body;
 
-    if (!name || !description || !value) {
-      return res.status(400).json({ error: 'Informe o nome, descrição e valor antes de continuar!' });
+    if (!name || !description || !value || !due_date) {
+      return res.status(400).json({ error: 'Informe o nome, descrição, data de vencimento e valor antes de continuar!' });
     }
 
     if (!Number(value)) {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const exit = await ExitsRepository.create({ name, description, value });
+    const exit = await ExitsRepository.create({
+      name, description, value, due_date,
+    });
 
     res.status(200).json(exit);
   }
 
   async update(req, res) {
     const { id } = req.params;
-    const { name, description, value } = req.body;
+    const {
+      name, description, value, due_date,
+    } = req.body;
 
-    if (!name || !description || !value) {
-      return res.status(400).json({ error: 'Informe o nome, descrição e valor antes de continuar!' });
+    if (!name || !description || !value || !due_date) {
+      return res.status(400).json({ error: 'Informe o nome, descrição, data de vencimento e valor antes de continuar!' });
     }
 
     if (!Number(value)) {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const exitUpdated = await ExitsRepository.update(id, { name, description, value });
+    const exitUpdated = await ExitsRepository.update(id, {
+      name, description, value, due_date,
+    });
 
     res.status(200).json(exitUpdated);
   }

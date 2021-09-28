@@ -6,8 +6,8 @@ const { router } = require('./routes');
 
 const PORT = 3000;
 
-// Create Database and Tables - drop: true for delete, false for not delete
-createTables({ drop: false });
+// Create Tables - reset: true for reset tables, false for not reset
+createTables({ reset: false });
 
 const app = express();
 

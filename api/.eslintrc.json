@@ -15,6 +15,7 @@
         "class-methods-use-this": "off",
         "consistent-return": "off",
         "linebreak-style": "off",
+        "camelcase": "off",
         "no-unused-vars": ["error", {"argsIgnorePattern": "next"}]
     }
 }

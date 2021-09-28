@@ -1,24 +1,7 @@
 const pg = require('pg');
 const pgtools = require('pgtools');
 
-async function createTables({ drop }) {
-  // Delete to table
-  if (drop) {
-    pgtools.dropdb({
-      host: 'localhost',
-      port: 5432,
-      user: 'root',
-      password: 'root',
-    }, 'financial_control', (err) => {
-      if (err) {
-        return console.log('Database not exists');
-      }
-      console.log('Database deleted');
-    });
-
-    return;
-  }
-
+async function createTables({ reset }) {
   // Database / postgre info
   const client = new pg.Client({
     host: 'localhost',
@@ -47,6 +30,12 @@ async function createTables({ drop }) {
     }));
   }
 
+  if (reset) {
+    await client.query('DROP TABLE IF EXISTS exits CASCADE');
+    await client.query('DROP TABLE IF EXISTS entries CASCADE');
+    console.log('Reseted tables');
+  }
+
   await client.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
 
   await client.query(`
@@ -54,7 +43,10 @@ async function createTables({ drop }) {
       id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
       name VARCHAR NOT NULL,
       description VARCHAR NOT NULL,
-      value real NOT NULL
+      value real NOT NULL,
+      due_date timestamp DEFAULT current_timestamp,
+      updated_at timestamp NOT NULL DEFAULT current_timestamp,
+      created_at timestamp NOT NULL DEFAULT current_timestamp
   )`);
 
   await client.query(`
@@ -62,7 +54,10 @@ async function createTables({ drop }) {
       id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
       name VARCHAR NOT NULL,
       description VARCHAR NOT NULL,
-      value real NOT NULL
+      value real NOT NULL,
+      due_date timestamp DEFAULT current_timestamp,
+      updated_at timestamp NOT NULL DEFAULT current_timestamp,
+      created_at timestamp NOT NULL DEFAULT current_timestamp
     )
   `);
 

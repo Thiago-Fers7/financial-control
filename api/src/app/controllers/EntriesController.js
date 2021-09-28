@@ -22,34 +22,42 @@ class EntriesController {
   }
 
   async store(req, res) {
-    const { name, description, value } = req.body;
+    const {
+      name, description, value, due_date,
+    } = req.body;
 
-    if (!name || !description || !value) {
-      return res.status(400).json({ error: 'Informe o nome, descrição e valor antes de continuar!' });
+    if (!name || !description || !value || !due_date) {
+      return res.status(400).json({ error: 'Informe o nome, descrição, data de vencimento e valor antes de continuar!' });
     }
 
     if (!Number(value)) {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const entrie = await EntriesRepository.create({ name, description, value });
+    const entrie = await EntriesRepository.create({
+      name, description, value, due_date,
+    });
 
     res.status(200).json(entrie);
   }
 
   async update(req, res) {
     const { id } = req.params;
-    const { name, description, value } = req.body;
+    const {
+      name, description, value, due_date,
+    } = req.body;
 
-    if (!name || !description || !value) {
-      return res.status(400).json({ error: 'Informe o nome, descrição e valor antes de continuar!' });
+    if (!name || !description || !value || !due_date) {
+      return res.status(400).json({ error: 'Informe o nome, descrição, data de vencimento e valor antes de continuar!' });
     }
 
     if (!Number(value)) {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
-    const entrieUpdated = await EntriesRepository.update(id, { name, description, value });
+    const entrieUpdated = await EntriesRepository.update(id, {
+      name, description, value, due_date,
+    });
 
     res.status(200).json(entrieUpdated);
   }

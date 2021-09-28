@@ -17,27 +17,31 @@ class EntriesRepository {
     return row;
   }
 
-  async create({ name, description, value }) {
+  async create({
+    name, description, value, due_date,
+  }) {
     const [row] = await db.query(`
       INSERT INTO entries (
-        name, description, value
+        name, description, value, due_date
       ) values (
-        $1, $2, $3
+        $1, $2, $3, $4
       )
 
       RETURNING *
-    `, [name, description, value]);
+    `, [name, description, value, due_date]);
 
     return row;
   }
 
-  async update(id, { name, description, value }) {
+  async update(id, {
+    name, description, value, due_date,
+  }) {
     const [row] = await db.query(`
       UPDATE entries
-      SET name = $1, description = $2, value = $3
-      WHERE id = $4
+      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = current_timestamp
+      WHERE id = $5
       RETURNING *
-   `, [name, description, value, id]);
+   `, [name, description, value, due_date, id]);
 
     return row;
   }

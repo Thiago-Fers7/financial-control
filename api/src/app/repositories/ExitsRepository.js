@@ -19,26 +19,30 @@ class ExitsRepository {
     return row;
   }
 
-  async create({ name, description, value }) {
+  async create({
+    name, description, value, due_date,
+  }) {
     const [row] = await db.query(`
       INSERT INTO exits (
-        name, description, value
+        name, description, value, due_date
       ) VALUES (
         $1, $2, $3
       )
       RETURNING *
-    `, [name, description, value]);
+    `, [name, description, value, due_date]);
 
     return row;
   }
 
-  async update(id, { name, description, value }) {
+  async update(id, {
+    name, description, value, due_date,
+  }) {
     const [row] = await db.query(`
       UPDATE exits
-      SET name = $1, description = $2, value = $3
-      WHERE id = $4
+      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = current_timestamp
+      WHERE id = $5
       RETURNING *
-    `, [name, description, value, id]);
+    `, [name, description, value, due_date, id]);
 
     return row;
   }
