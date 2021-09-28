@@ -1,16 +1,18 @@
+import { Link } from 'react-router-dom';
+
 import { Container, Content, Navigation } from './styles';
 
 function Header() {
   return (
     <Container>
       <Content>
-        <a href="$">HOME</a>
+        <Link to="/">HOME</Link>
 
         <Navigation>
           <ul>
-            <li><a href="$">Entradas</a></li>
-            <li><a href="$">Vencimentos</a></li>
-            <li><a href="$">Saídas</a></li>
+            <li><Link to="/entradas">Entradas</Link></li>
+            <li><Link to="/vencimentos">Vencimentos</Link></li>
+            <li><Link to="/saidas">Saídas</Link></li>
           </ul>
         </Navigation>
       </Content>
