@@ -6,8 +6,8 @@ function Home() {
   return (
     <Container>
       <Resume>
-        <TableResume title="Entradas" />
-        <TableResume title="Saídas" />
+        <TableResume title="Entradas" color="green" />
+        <TableResume title="Saídas" color="red" />
       </Resume>
     </Container>
   );

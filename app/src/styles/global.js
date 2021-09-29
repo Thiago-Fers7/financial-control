@@ -14,9 +14,13 @@ export const GlobalStyles = createGlobalStyle`
     --hover-link-background: #e2e2e2;
     --common-text: #393939;
     --background-header: #fff;
+    --background-table: #fff;
+    --green-title: green;
+    --red-title: red;
 
     // Others
     --radius-button: 0.4rem;
+    --commom-text: 1.6rem;
   }
 
   body {

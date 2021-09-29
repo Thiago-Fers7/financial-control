@@ -7,5 +7,17 @@ export const Container = styled.main`
 `;
 
 export const Resume = styled.section`
+  overflow-x: auto;
 
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+
+  padding: 2rem 0;
+  
+  place-items: center;
+
+  @media (max-width: 900px) {
+    grid: none;
+  } 
 `;
