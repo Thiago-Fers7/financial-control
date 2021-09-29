@@ -54,6 +54,9 @@ export const Container = styled.div`
     & > div {
       margin-top: 0.5rem;
 
+      span {
+        font-size: ${({ theme }) => theme.variables.others.tableTextSize};
+      }
     }
   }
 
