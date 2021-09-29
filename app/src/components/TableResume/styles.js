@@ -3,6 +3,27 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
 
+  header {
+    h2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span.expand {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+
+        color: ${({ theme }) => theme.variables.colors.commonText};
+        font-size: 1.2rem;
+        font-weight: 500;
+
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+  }
+
   header, section {
     & > div {
       display: flex;
@@ -59,6 +80,4 @@ export const Container = styled.div`
       }
     }
   }
-
-
 `;

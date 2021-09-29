@@ -27,7 +27,18 @@ function MoneyIcon({ colorIcon }) {
   );
 }
 
-export { CircleIndicatorIcon, AlertIcon, MoneyIcon };
+function DropDown({ rotate, color }) {
+  return (
+    <svg style={{ transform: `rotate(${rotate})` }} xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill={color}>
+      <path d="M0 0h24v24H0V0z" fill="none" />
+      <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z" />
+    </svg>
+  );
+}
+
+export {
+  CircleIndicatorIcon, AlertIcon, MoneyIcon, DropDown,
+};
 
 CircleIndicatorIcon.propTypes = {
   colorIcon: PropTypes.string.isRequired,
@@ -40,4 +51,9 @@ AlertIcon.propTypes = {
 
 MoneyIcon.propTypes = {
   colorIcon: PropTypes.string.isRequired,
+};
+
+DropDown.propTypes = {
+  rotate: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
 };
