@@ -1,44 +1,15 @@
-const pg = require('pg');
-const pgtools = require('pgtools');
+const db = require('./index');
 
 async function createTables({ reset }) {
-  // Database / postgre info
-  const client = new pg.Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'root',
-    password: 'root',
-    database: 'financial_control',
-  });
-
-  // Checking if the database exists
-  try {
-    await client.connect();
-  } catch (error) {
-    // if not exists, create new database
-    await pgtools.createdb({
-      host: 'localhost',
-      port: 5432,
-      user: 'root',
-      password: 'root',
-    }, 'financial_control', ((err) => {
-      if (err) {
-        return console.error('Database already exists');
-      }
-
-      console.log('Database created!');
-    }));
-  }
-
   if (reset) {
-    await client.query('DROP TABLE IF EXISTS exits CASCADE');
-    await client.query('DROP TABLE IF EXISTS entries CASCADE');
+    await db.query('DROP TABLE IF EXISTS exits CASCADE');
+    await db.query('DROP TABLE IF EXISTS entries CASCADE');
     console.log('Reseted tables');
   }
 
-  await client.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
+  await db.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
 
-  await client.query(`
+  await db.query(`
     CREATE TABLE IF NOT EXISTS entries (
       id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
       name VARCHAR NOT NULL,
@@ -49,7 +20,7 @@ async function createTables({ reset }) {
       created_at timestamp NOT NULL DEFAULT current_timestamp
   )`);
 
-  await client.query(`
+  await db.query(`
     CREATE TABLE IF NOT EXISTS exits (
       id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
       name VARCHAR NOT NULL,
@@ -60,8 +31,6 @@ async function createTables({ reset }) {
       created_at timestamp NOT NULL DEFAULT current_timestamp
     )
   `);
-
-  await client.end();
 }
 
 module.exports = { createTables };
