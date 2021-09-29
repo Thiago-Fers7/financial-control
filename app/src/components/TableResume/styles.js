@@ -9,8 +9,8 @@ export const Container = styled.div`
       flex-wrap: nowrap;
       justify-content: space-between;
       
-      background: var(--background-table);
-      border-radius: var(--radius-button);
+      background: ${({ theme }) => theme.variables.colors.backgroundTable};
+      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
 
       span {
         overflow: hidden;
@@ -18,7 +18,7 @@ export const Container = styled.div`
         white-space: nowrap;
 
         flex: 1;
-        font-size: var(--commom-text);
+        font-size: ${({ theme }) => theme.variables.others.commomTextSize};
         padding: 0.5rem 1rem;
 
         &:first-child {

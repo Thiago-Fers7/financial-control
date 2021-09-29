@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.header`
   width: 100%;
   height: 7rem;
-  background: var(--background-header);
+  background: ${({ theme }) => theme.variables.colors.backgroundHeader};
 
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
@@ -41,12 +41,12 @@ export const Navigation = styled.nav`
     li {
       a {
         padding: 0.5rem 1rem;
-        border-radius: var(--radius-button);
+        border-radius: ${({ theme }) => theme.variables.others.radiusButton};
 
         transition: 0.1s;
 
         &:hover, &.active {
-          background: var(--hover-link-background);
+          background: ${({ theme }) => theme.variables.colors.hoverLinkBackground};
         }
       }
     }
