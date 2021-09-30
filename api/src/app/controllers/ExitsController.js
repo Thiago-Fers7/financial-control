@@ -2,9 +2,9 @@ const ExitsRepository = require('../repositories/ExitsRepository');
 
 class ExitsController {
   async index(req, res) {
-    const { order } = req.query;
+    const { order, limit } = req.query;
 
-    const exits = await ExitsRepository.findAll(order);
+    const exits = await ExitsRepository.findAll(order, limit);
 
     res.status(200).json(exits);
   }

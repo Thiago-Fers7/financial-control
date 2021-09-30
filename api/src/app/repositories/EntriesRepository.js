@@ -1,11 +1,12 @@
 const db = require('../../database/index');
 
 class EntriesRepository {
-  async findAll(order = 'asc') {
+  async findAll(order = 'asc', limit = 'ALL') {
     const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const maxReturned = Number(limit) ? limit : 'ALL';
 
     const rows = await db.query(`
-      SELECT * FROM entries ORDER BY name ${direction}
+      SELECT * FROM entries ORDER BY name ${direction} LIMIT ${maxReturned}
     `);
 
     return rows;

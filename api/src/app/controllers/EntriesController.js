@@ -2,9 +2,9 @@ const EntriesRepository = require('../repositories/EntriesRepository');
 
 class EntriesController {
   async index(req, res) {
-    const { order } = req.query;
+    const { order, limit } = req.query;
 
-    const entries = await EntriesRepository.findAll(order);
+    const entries = await EntriesRepository.findAll(order, limit);
 
     res.status(200).json(entries);
   }
