@@ -2,9 +2,24 @@ const EntriesRepository = require('../repositories/EntriesRepository');
 
 class EntriesController {
   async index(req, res) {
-    const { order, limit } = req.query;
+    const {
+      order, limit, initial_date, final_date, type_date,
+    } = req.query;
 
-    const entries = await EntriesRepository.findAll(order, limit);
+    let initialDate = initial_date;
+    let finalDate = final_date;
+
+    if (!initialDate && finalDate) {
+      initialDate = new Date().toISOString();
+      finalDate = new Date(finalDate).toISOString();
+    } else if (initialDate && finalDate) {
+      initialDate = new Date(initialDate).toISOString();
+      finalDate = new Date(finalDate).toISOString();
+    }
+
+    const entries = await EntriesRepository.findAll({
+      order, limit, initialDate, finalDate, type_date,
+    });
 
     res.status(200).json(entries);
   }

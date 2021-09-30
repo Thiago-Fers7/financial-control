@@ -4,7 +4,7 @@ const { createTables } = require('./database/schema');
 
 const { router } = require('./routes');
 
-const PORT = 3000;
+const PORT = 3333;
 
 // Create Tables - reset: true for reset tables, false for not reset
 createTables({ reset: false });

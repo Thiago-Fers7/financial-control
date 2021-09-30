@@ -1,12 +1,24 @@
 const db = require('../../database/index');
 
 class EntriesRepository {
-  async findAll(order = 'asc', limit = 'ALL') {
+  async findAll({
+    order = 'desc', limit = 'ALL', initialDate, finalDate, type_date,
+  }) {
     const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const maxReturned = Number(limit) ? limit : 'ALL';
 
+    let queryDate = '';
+
+    if (initialDate && finalDate) {
+      const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
+      queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
+    }
+
     const rows = await db.query(`
-      SELECT * FROM entries ORDER BY name ${direction} LIMIT ${maxReturned}
+      SELECT * FROM entries
+      ${queryDate}
+      ORDER BY created_at ${direction} 
+      LIMIT ${maxReturned}
     `);
 
     return rows;
