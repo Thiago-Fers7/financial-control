@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTheme } from 'styled-components';
 import { AlertIcon, CircleIndicatorIcon } from '../../components/Icons';
 import { TableResume } from '../../components/TableResume';

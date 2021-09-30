@@ -1,5 +1,7 @@
 const ExitsRepository = require('../repositories/ExitsRepository');
 
+const { minDate } = require('../../utils/transformDate');
+
 class ExitsController {
   async index(req, res) {
     const {
@@ -10,11 +12,11 @@ class ExitsController {
     let finalDate = final_date;
 
     if (!initialDate && finalDate) {
-      initialDate = new Date().toISOString();
-      finalDate = new Date(finalDate).toISOString();
+      initialDate = minDate();
+      finalDate = minDate(finalDate);
     } else if (initialDate && finalDate) {
-      initialDate = new Date(initialDate).toISOString();
-      finalDate = new Date(finalDate).toISOString();
+      initialDate = minDate(initialDate);
+      finalDate = minDate(finalDate);
     }
 
     const exits = await ExitsRepository.findAll({

@@ -15,9 +15,9 @@ async function createTables({ reset }) {
       name VARCHAR NOT NULL,
       description VARCHAR NOT NULL,
       value real NOT NULL,
-      due_date timestamp DEFAULT current_timestamp,
-      updated_at timestamp NOT NULL DEFAULT current_timestamp,
-      created_at timestamp NOT NULL DEFAULT current_timestamp
+      due_date date DEFAULT CURRENT_DATE,
+      updated_at date NOT NULL DEFAULT CURRENT_DATE,
+      created_at date NOT NULL DEFAULT CURRENT_DATE
   )`);
 
   await db.query(`
@@ -26,9 +26,9 @@ async function createTables({ reset }) {
       name VARCHAR NOT NULL,
       description VARCHAR NOT NULL,
       value real NOT NULL,
-      due_date timestamp DEFAULT current_timestamp,
-      updated_at timestamp NOT NULL DEFAULT current_timestamp,
-      created_at timestamp NOT NULL DEFAULT current_timestamp
+      due_date date DEFAULT CURRENT_DATE,
+      updated_at date NOT NULL DEFAULT CURRENT_DATE,
+      created_at date NOT NULL DEFAULT CURRENT_DATE
     )
   `);
 }

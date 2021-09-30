@@ -51,7 +51,7 @@ class ExitsRepository {
   }) {
     const [row] = await db.query(`
       UPDATE exits
-      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = current_timestamp
+      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = CURRENT_DATE
       WHERE id = $5
       RETURNING *
     `, [name, description, value, due_date, id]);

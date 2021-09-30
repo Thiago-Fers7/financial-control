@@ -6,7 +6,6 @@ class EntriesRepository {
   }) {
     const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const maxReturned = Number(limit) ? limit : 'ALL';
-
     let queryDate = '';
 
     if (initialDate && finalDate) {
@@ -51,7 +50,7 @@ class EntriesRepository {
   }) {
     const [row] = await db.query(`
       UPDATE entries
-      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = current_timestamp
+      SET name = $1, description = $2, value = $3, due_date = $4, updated_at = CURRENT_DATE
       WHERE id = $5
       RETURNING *
    `, [name, description, value, due_date, id]);
