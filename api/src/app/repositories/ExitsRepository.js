@@ -16,7 +16,7 @@ class ExitsRepository {
     const rows = await db.query(`
       SELECT * FROM exits
       ${queryDate}
-      ORDER BY created_at ${direction} 
+      ORDER BY ${type_date} ${direction} 
       LIMIT ${maxReturned}
     `);
 

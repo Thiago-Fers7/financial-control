@@ -7,16 +7,16 @@ class EntriesRepository {
     const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const maxReturned = Number(limit) ? limit : 'ALL';
     let queryDate = '';
+    const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
 
     if (initialDate && finalDate) {
-      const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
       queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
     }
 
     const rows = await db.query(`
       SELECT * FROM entries
       ${queryDate}
-      ORDER BY created_at ${direction} 
+      ORDER BY ${type_date} ${direction} 
       LIMIT ${maxReturned}
     `);
 

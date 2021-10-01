@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import { useTheme } from 'styled-components';
 import { DropDown } from '../Icons';
+import { simpleDate } from '../../utils/dateMethods';
 
 import { Container } from './styles';
 
-function TableResume({ title, color }) {
+function TableResume({ title, color, summaries }) {
   const { variables } = useTheme();
 
   return (
@@ -26,31 +27,13 @@ function TableResume({ title, color }) {
       </header>
 
       <section>
-        <div>
-          <span>Salário</span>
-          <span>R$ 1.000.500,00</span>
-          <span>15/09/2021</span>
-        </div>
-        <div>
-          <span>Salário</span>
-          <span>R$ 1.000.500,00</span>
-          <span>15/09/2021</span>
-        </div>
-        <div>
-          <span>Salário</span>
-          <span>R$ 1.000.500,00</span>
-          <span>15/09/2021</span>
-        </div>
-        <div>
-          <span>Salário</span>
-          <span>R$ 1.000.500,00</span>
-          <span>15/09/2021</span>
-        </div>
-        <div>
-          <span>Salário</span>
-          <span>R$ 1.000.500,00</span>
-          <span>15/09/2021</span>
-        </div>
+        {summaries.map((summarie) => (
+          <div key={summarie.id}>
+            <span>{summarie.name}</span>
+            <span>{summarie.value}</span>
+            <span>{simpleDate(summarie.due_date)}</span>
+          </div>
+        ))}
       </section>
     </Container>
   );
@@ -61,4 +44,10 @@ export { TableResume };
 TableResume.propTypes = {
   title: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
+  summaries: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    created_at: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  })).isRequired,
 };

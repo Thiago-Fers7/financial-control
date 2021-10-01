@@ -15,8 +15,6 @@ export const TransactionResume = styled.section`
 
   padding: 2rem 0;
   
-  place-items: center;
-
   @media (max-width: 900px) {
     grid: none;
   } 

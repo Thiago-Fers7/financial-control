@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
+
 import { AlertIcon, CircleIndicatorIcon } from '../../components/Icons';
 import { TableResume } from '../../components/TableResume';
 
@@ -10,11 +11,26 @@ import {
 function Home() {
   const { variables } = useTheme();
 
+  const [entries, setEntries] = useState([]);
+  const [exits, setExits] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3333/entries-and-exits?type_date=due_date').then((res) => res.json()).then((data) => {
+      setEntries(data.entries);
+      setExits(data.exits);
+    })
+      .catch((err) => {
+        if (err) {
+          alert('Erro na conexão com o servidor!');
+        }
+      });
+  }, []);
+
   return (
     <Container>
       <TransactionResume>
-        <TableResume title="Entradas" color={variables.colors.entries} />
-        <TableResume title="Saídas" color={variables.colors.exits} />
+        <TableResume title="Entradas" color={variables.colors.entries} summaries={entries} />
+        <TableResume title="Saídas" color={variables.colors.exits} summaries={exits} />
       </TransactionResume>
 
       <TransactionsDetailsResume>
