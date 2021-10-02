@@ -122,7 +122,7 @@ export const Container = styled.div`
     & > div {
       &.minus {
         ${({ theme, textColor }) => css`
-          background: linear-gradient(to right, ${textColor} 1%, ${theme.variables.colors.nextDueDateBackground} 0%)};
+          background: linear-gradient(to right, ${textColor} 1%, ${theme.variables.colors.nextDueDateBackground} 0%);
         `}
       }
 
