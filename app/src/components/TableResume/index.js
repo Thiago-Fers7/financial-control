@@ -1,21 +1,34 @@
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from 'styled-components';
 import { DropDown } from '../Icons';
-import { simpleDate } from '../../utils/dateMethods';
+
+import { simpleDate, getBigDate } from '../../utils/dateMethods';
+import { convertToReal } from '../../utils/convertToMoney';
 
 import { Container } from './styles';
 
 function TableResume({ title, color, summaries }) {
   const { variables } = useTheme();
 
+  const [isActive, setIsActive] = useState(false);
+
+  const summarieRef = useRef(null);
+
+  function handleActive() {
+    setIsActive(!isActive);
+
+    summarieRef.current.scroll(0, 0);
+  }
+
   return (
-    <Container textColor={color}>
+    <Container textColor={color} isActive={isActive}>
       <header>
         <h2>
           <span>{title}</span>
-          <span className="expand">
+          <span className="expand" onClick={handleActive}>
             Expandir
-            <DropDown rotate="270deg" color={variables.colors.commonText} />
+            <DropDown isActive={isActive} color={variables.colors.commonText} />
           </span>
         </h2>
 
@@ -26,11 +39,11 @@ function TableResume({ title, color, summaries }) {
         </div>
       </header>
 
-      <section>
+      <section ref={summarieRef} className={isActive ? 'active' : ''}>
         {summaries.map((summarie) => (
-          <div key={summarie.id}>
+          <div key={summarie.id} className={getBigDate(summarie.due_date) ? 'minus' : ''}>
             <span>{summarie.name}</span>
-            <span>{summarie.value}</span>
+            <span>{convertToReal(summarie.value)}</span>
             <span>{simpleDate(summarie.due_date)}</span>
           </div>
         ))}
