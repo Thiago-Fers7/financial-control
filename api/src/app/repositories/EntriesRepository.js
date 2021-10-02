@@ -1,5 +1,7 @@
 const db = require('../../database/index');
 
+const { getNext30Days } = require('../../utils/transformDate');
+
 class EntriesRepository {
   async findAll({
     order = 'desc', limit = 'ALL', initialDate, finalDate, type_date,
@@ -12,13 +14,13 @@ class EntriesRepository {
     if (initialDate && finalDate) {
       queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
     } else if (finalDate) {
-      queryDate = `WHERE ${typeDate} >= '${finalDate}'`;
+      queryDate = `WHERE ${typeDate} BETWEEN '${finalDate}' AND '${getNext30Days()}'`;
     }
 
     const rows = await db.query(`
       SELECT * FROM entries
       ${queryDate}
-      ORDER BY ${type_date} ${direction} 
+      ORDER BY ${typeDate} ${direction} 
       LIMIT ${maxReturned}
     `);
 

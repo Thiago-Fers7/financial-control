@@ -10,7 +10,7 @@ const theme = {
       greenTitle: '#1a9f37',
       entries: '#1a9f37',
       dueDate: '#ff6b00',
-      nextDueDateBackground: '#ffd04bc2',
+      nextDueDateBackground: '#ffde8266',
       exits: '#ff0000',
       redTitle: '#ff5a5a',
       backgroundDetailsTransactionHome: '#fff',

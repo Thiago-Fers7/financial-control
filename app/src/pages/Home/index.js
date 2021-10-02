@@ -18,9 +18,12 @@ function Home() {
   const [exits, setExits] = useState([]);
 
   let sumEntries = 0;
+  let nextEntries = 0;
   entries.forEach((entrie) => {
     if (!getBigDate(entrie.due_date)) {
       sumEntries += entrie.value;
+    } else {
+      nextEntries += entrie.value;
     }
   });
 
@@ -57,7 +60,7 @@ function Home() {
 
       <TransactionsDetailsResume>
         <header>
-          <h2>Detalhes das transções</h2>
+          <h2>Detalhes das transações</h2>
           <strong>(30 dias)</strong>
         </header>
 
@@ -72,10 +75,10 @@ function Home() {
 
           <div className="details">
             <div>
-              <span>Próximas Saídas</span>
-              <AlertIcon colorIcon={variables.colors.dueDate} />
+              <span>Próximas Entradas</span>
+              <AlertIcon colorIcon={variables.colors.entries} />
             </div>
-            <span>{convertToReal(nextDueDate)}</span>
+            <span>{convertToReal(nextEntries)}</span>
           </div>
 
           <div className="details">
@@ -86,9 +89,25 @@ function Home() {
             <span>{convertToReal(sumExits)}</span>
           </div>
 
+          <div className="details">
+            <div>
+              <span>Próximas Saídas</span>
+              <AlertIcon colorIcon={variables.colors.dueDate} />
+            </div>
+            <span>{convertToReal(nextDueDate)}</span>
+          </div>
+
           <div className="totalDetails">
             <span>Saldo Total</span>
-            <span>{convertToReal(sumEntries - sumExits)}</span>
+            <div>
+              <span>{convertToReal(sumEntries)}</span>
+              <span>
+                -
+                {' '}
+                {convertToReal(sumExits)}
+              </span>
+              <span>{convertToReal(sumEntries - sumExits)}</span>
+            </div>
           </div>
         </TransactionsValues>
       </TransactionsDetailsResume>

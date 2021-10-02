@@ -27,7 +27,7 @@ function TableResume({ title, color, summaries }) {
         <h2>
           <span>{title}</span>
           <span className="expand" onClick={handleActive}>
-            Expandir
+            {isActive ? 'Recolher' : 'Expandir'}
             <DropDown isActive={isActive} color={variables.colors.commonText} />
           </span>
         </h2>

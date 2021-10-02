@@ -57,8 +57,10 @@ export const TransactionsValues = styled.section`
   
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-areas: 'entrie dueDate exits'
-  'total total  total';
+  grid-template-areas: 
+    'entrie nextEntries total'
+    'exits nextExits total';
+
   gap: 2rem;
 
   @media (max-width: 600px) {
@@ -76,10 +78,10 @@ export const TransactionsValues = styled.section`
       }
     }
     &:nth-child(2) {
-      grid-area: dueDate;
+      grid-area: nextEntries;
 
       & > div > span:first-child {
-        color: ${({ theme }) => theme.variables.colors.dueDate};
+        color: ${({ theme }) => theme.variables.colors.entries};
       }
     }
     &:nth-child(3) {
@@ -90,12 +92,57 @@ export const TransactionsValues = styled.section`
       }
     }
     &:nth-child(4) {
-      grid-area: total;
-      width: 100%;
-      text-align: right;
+      grid-area: nextExits;
 
       & > div > span:first-child {
-        color: ${({ theme }) => theme.variables.colors.entries};
+        color: ${({ theme }) => theme.variables.colors.dueDate};
+      }
+    }
+
+    &.totalDetails {
+      grid-area: total;
+      text-align: right;
+      display: flex;
+
+      justify-content: space-between;
+
+      & > span {
+        font-size: 2rem;
+      }
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        
+        text-align: right;
+
+        & > span {
+          width: 100%;
+
+          &:nth-child(1) {
+            color: ${({ theme }) => theme.variables.colors.entries};
+          }
+
+          &:nth-child(2) {
+            position: relative;
+            color: ${({ theme }) => theme.variables.colors.exits};
+
+            &:before {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              background: black;
+              height: 0.1rem;
+              width: 50%;
+            }
+          }
+        
+          &:last-child {
+            margin-top: 2rem;
+            font-size: 2.2rem;
+          }
+        }
       }
     }
 

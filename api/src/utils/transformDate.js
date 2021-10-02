@@ -20,4 +20,12 @@ function minDate(dateValue) {
   return `${String(year)}-${String(month)}-${String(day)}`;
 }
 
-module.exports = { minDate };
+function getNext30Days() {
+  const date = new Date();
+
+  date.setDate(date.getDate() + 30);
+
+  return date.toLocaleDateString().split('/').reverse().join('-');
+}
+
+module.exports = { minDate, getNext30Days };
