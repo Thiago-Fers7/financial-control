@@ -11,6 +11,8 @@ class EntriesRepository {
 
     if (initialDate && finalDate) {
       queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
+    } else if (finalDate) {
+      queryDate = `WHERE ${typeDate} >= '${finalDate}'`;
     }
 
     const rows = await db.query(`

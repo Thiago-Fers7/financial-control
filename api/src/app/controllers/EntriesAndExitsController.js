@@ -13,7 +13,6 @@ class EntriesAndExitsController {
     let finalDate = final_date;
 
     if (!initialDate && finalDate) {
-      initialDate = minDate();
       finalDate = minDate(finalDate);
     } else if (initialDate && finalDate) {
       initialDate = minDate(initialDate);

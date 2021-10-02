@@ -8,9 +8,12 @@ class ExitsRepository {
     const maxReturned = Number(limit) ? limit : 'ALL';
     let queryDate = '';
 
+    const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
+
     if (initialDate && finalDate) {
-      const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
       queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
+    } else if (finalDate) {
+      queryDate = `WHERE ${typeDate} >= '${finalDate}'`;
     }
 
     const rows = await db.query(`
