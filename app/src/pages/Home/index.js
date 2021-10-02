@@ -4,6 +4,9 @@ import { useTheme } from 'styled-components';
 import { AlertIcon, CircleIndicatorIcon } from '../../components/Icons';
 import { TableResume } from '../../components/TableResume';
 
+import { convertToReal } from '../../utils/convertToMoney';
+import { get30DaysAgo, getBigDate } from '../../utils/dateMethods';
+
 import {
   Container, TransactionResume, TransactionsDetailsResume, TransactionsValues,
 } from './styles';
@@ -14,15 +17,34 @@ function Home() {
   const [entries, setEntries] = useState([]);
   const [exits, setExits] = useState([]);
 
+  let sumEntries = 0;
+  entries.forEach((entrie) => {
+    if (!getBigDate(entrie.due_date)) {
+      sumEntries += entrie.value;
+    }
+  });
+
+  let sumExits = 0;
+  let nextDueDate = 0;
+  exits.forEach((exit) => {
+    if (!getBigDate(exit.due_date)) {
+      sumExits += exit.value;
+    } else {
+      nextDueDate += exit.value;
+    }
+  });
+
+  const beforeDate = get30DaysAgo();
+
   useEffect(() => {
-    fetch('http://localhost:3333/entries-and-exits?type_date=due_date').then((res) => res.json()).then((data) => {
-      setEntries(data.entries);
-      setExits(data.exits);
-    })
+    fetch(`http://localhost:3333/entries-and-exits?type_date=due_date&final_date=${beforeDate}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setEntries(data.entries);
+        setExits(data.exits);
+      })
       .catch((err) => {
-        if (err) {
-          alert('Erro na conexão com o servidor!');
-        }
+        if (err) alert('Erro ao buscar dados!');
       });
   }, []);
 
@@ -36,24 +58,24 @@ function Home() {
       <TransactionsDetailsResume>
         <header>
           <h2>Detalhes das transções</h2>
-          <strong>(últimos 30 dias)</strong>
+          <strong>(30 dias)</strong>
         </header>
 
         <TransactionsValues>
           <div className="details">
             <div>
-              <span>Entrada</span>
+              <span>Entradas</span>
               <CircleIndicatorIcon rotate="180deg" colorIcon={variables.colors.entries} />
             </div>
-            <span>150</span>
+            <span>{convertToReal(sumEntries)}</span>
           </div>
 
           <div className="details">
             <div>
-              <span>Vencimentos próximos</span>
+              <span>Próximas Saídas</span>
               <AlertIcon colorIcon={variables.colors.dueDate} />
             </div>
-            <span>150</span>
+            <span>{convertToReal(nextDueDate)}</span>
           </div>
 
           <div className="details">
@@ -61,12 +83,12 @@ function Home() {
               <span>Saídas</span>
               <CircleIndicatorIcon rotate="0" colorIcon={variables.colors.exits} />
             </div>
-            <span>150</span>
+            <span>{convertToReal(sumExits)}</span>
           </div>
 
           <div className="totalDetails">
             <span>Saldo Total</span>
-            <span>150</span>
+            <span>{convertToReal(sumEntries - sumExits)}</span>
           </div>
         </TransactionsValues>
       </TransactionsDetailsResume>

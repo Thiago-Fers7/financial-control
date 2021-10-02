@@ -7,7 +7,22 @@ export const Container = styled.main`
 `;
 
 export const TransactionResume = styled.section`
-  overflow-x: auto;
+  overflow-x: hidden;
+
+  @media (max-width: 359px) {
+    overflow: auto;
+  }
+
+  &::-webkit-scrollbar {
+    margin: 1rem 0;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: grey;    /* color of the scroll thumb */
+    border-radius: 0.5rem;       /* roundness of the scroll thumb */
+  }
 
   display: grid;
   grid-template-columns: 1fr 1fr;
