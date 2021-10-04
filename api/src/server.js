@@ -1,5 +1,7 @@
 const express = require('express');
 require('express-async-errors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger.json');
 
 const { createTables } = require('./database/schema');
 
@@ -15,6 +17,7 @@ const PORT = 3333;
 const app = express();
 
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(cors);
 app.use(router);
 app.use(errorHandler);

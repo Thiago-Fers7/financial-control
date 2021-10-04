@@ -1,0 +1,218 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API for Financial Control",
+    "description": "The purpose of this api is to manipulate the user's Finances.",
+    "termsOfService": "http://localhost:3333/terms",
+    "contact": {
+      "email": "thiago_fers7@hotmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333",
+      "description": "Main API"
+    }
+  ],
+  "paths": {
+    "/entries": {
+      "post": {
+        "summary": "Register entries",
+        "description": "Route responsible for registering entries",
+        "tags": [
+          "Entries"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntriesPost"
+              },
+              "examples": {
+                "Entries": {
+                  "value": {
+                    "name": "Salário",
+                    "description": "Empresa: Google",
+                    "value": 2000.00,
+                    "due_date": "2021-11-05"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "name, description, date and value is required"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Find all entries",
+        "summary": "Get all entries",
+        "tags": [
+          "Entries"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/entries/{id}": {
+      "get": {
+        "description": "Get one by id",
+        "summary": "Get entry",
+        "tags": [
+          "Entries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired entry id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Entry not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update entries",
+        "description": "Route responsible for updating entries",
+        "tags": [
+          "Entries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired entry id for update",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntriesPost"
+              },
+              "examples": {
+                "Entries": {
+                  "value": {
+                    "name": "Salário",
+                    "description": "Empresa: Google",
+                    "value": 2000.00,
+                    "due_date": "2021-11-05"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "name, description, date and value is required"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EntriesPost": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "EntriesGet": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
