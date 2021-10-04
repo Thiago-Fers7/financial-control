@@ -14,6 +14,7 @@ const Header = styled.header`
 
         input, select {
           padding: 0.3rem 0.6rem;
+          height: 3.6rem;
           border-radius: ${({ theme }) => theme.variables.others.radiusButton};
           border: 1px solid white;
         }
@@ -26,6 +27,11 @@ const Header = styled.header`
     width: min-content;
     right: -19.2rem;
     top: 0;
+
+    @media (max-width: 1420px) {
+      position: sticky;
+      padding: 0;
+    }
   }
 `;
 
@@ -87,6 +93,28 @@ const SearchDate = styled.div`
 
     & > select {
       width: 100%;
+    }
+  }
+
+  @media (max-width: 1420px) {
+    flex-direction: row;
+
+    label {
+      width: max-content;
+      span {
+        display: block;
+      }
+
+      select {
+        border: none;
+      }
+    }
+
+
+
+    button {
+      align-self: end;
+      height: 3.6rem;
     }
   }
 `;
