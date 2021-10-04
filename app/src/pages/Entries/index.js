@@ -1,6 +1,11 @@
+import { Search } from '../../components/Search/Search';
+import { Container } from '../styles';
+
 function Entries() {
   return (
-    <h1>Entradas</h1>
+    <Container>
+      <Search />
+    </Container>
   );
 }
 

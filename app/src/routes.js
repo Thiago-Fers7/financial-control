@@ -18,6 +18,7 @@ function Routes() {
         <Route path="/entradas" component={Entries} />
         <Route path="/saidas" component={Exits} />
         <Route path="*" component={NotFound} />
+        <Route path="*" component={NotFound} />
       </Switch>
     </BrowserRouter>
   );

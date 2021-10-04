@@ -1,6 +1,11 @@
+import { Search } from '../../components/Search/Search';
+import { Container } from '../styles';
+
 function DueDate() {
   return (
-    <h1>Vecimentos</h1>
+    <Container>
+      <Search />
+    </Container>
   );
 }
 

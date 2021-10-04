@@ -1,5 +1,4 @@
 const db = require('../../database/index');
-
 const { getNext30Days } = require('../../utils/transformDate');
 
 class EntriesRepository {
@@ -9,6 +8,7 @@ class EntriesRepository {
     const direction = order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
     const maxReturned = Number(limit) ? limit : 'ALL';
     let queryDate = '';
+
     const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
 
     if (initialDate && finalDate) {
