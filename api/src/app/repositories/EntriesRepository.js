@@ -1,5 +1,5 @@
 const db = require('../../database/index');
-const { getNext30Days } = require('../../utils/transformDate');
+// const { getNext30Days } = require('../../utils/transformDate');
 
 class EntriesRepository {
   async findAll({
@@ -9,12 +9,18 @@ class EntriesRepository {
     const maxReturned = Number(limit) ? limit : 'ALL';
     let queryDate = '';
 
-    const typeDate = type_date === 'due_date' ? 'due_date' : 'created_at';
+    const typeDate = type_date === 'created_at' ? 'created_at' : 'due_date';
 
     if (initialDate && finalDate) {
-      queryDate = `WHERE ${typeDate} BETWEEN '${initialDate}' AND '${finalDate}'`;
-    } else if (finalDate) {
-      queryDate = `WHERE ${typeDate} BETWEEN '${finalDate}' AND '${getNext30Days()}'`;
+      // Retorna o valor entre as datas desejadas a partir da menor data,
+      // ou seja, a data inicial deve ser menor que a data final
+      queryDate = `WHERE ${typeDate} >= '${initialDate}' AND ${typeDate} <= '${finalDate}'`;
+    } else if (finalDate && !initialDate) {
+      // Retorna o valor a partir do mais antigo informado pelo usuário (finalDate)
+      queryDate = `WHERE ${typeDate} <= '${finalDate}'`;
+    } else if (initialDate) {
+      // Retorna o valor a partir do mais novo informado pelo usuário (initialDate)
+      queryDate = `WHERE ${typeDate} >= '${initialDate}'`;
     }
 
     const rows = await db.query(`
@@ -63,7 +69,12 @@ class EntriesRepository {
   }
 
   async delete(id) {
-    const deleteOp = await db.query('DELETE FROM entries WHERE id = $1', [id]);
+    let deleteOp;
+    try {
+      deleteOp = await db.query('DELETE FROM entries WHERE id = $1', [id]);
+    } catch (err) {
+      return 'Entry not found';
+    }
 
     return deleteOp;
   }

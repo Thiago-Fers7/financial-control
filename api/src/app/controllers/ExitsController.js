@@ -1,22 +1,22 @@
 const ExitsRepository = require('../repositories/ExitsRepository');
 
-const { minDate } = require('../../utils/transformDate');
-
 class ExitsController {
   async index(req, res) {
     const {
       order, limit, initial_date, final_date, type_date,
     } = req.query;
 
-    let initialDate = initial_date;
-    let finalDate = final_date;
+    const [initialDate, finalDate] = [initial_date, final_date].map((date = '') => {
+      if (new Date(date).toString() === 'Invalid Date') {
+        return false;
+      }
 
-    if (!initialDate && finalDate) {
-      finalDate = minDate(finalDate);
-    } else if (initialDate && finalDate) {
-      initialDate = minDate(initialDate);
-      finalDate = minDate(finalDate);
-    }
+      return new Date(date)
+        .toLocaleDateString()
+        .split('/')
+        .reverse()
+        .join('-');
+    });
 
     const exits = await ExitsRepository.findAll({
       order, limit, initialDate, finalDate, type_date,
