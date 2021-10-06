@@ -82,8 +82,8 @@ class ExitsController {
     const { id } = req.params;
 
     const deleteOp = await ExitsRepository.delete(id);
-    if (deleteOp) {
-      return res.status(404).json({ error: 'Entrie not found' });
+    if (typeof deleteOp === 'string') {
+      return res.status(404).json({ error: deleteOp });
     }
     res.sendStatus(204);
   }
