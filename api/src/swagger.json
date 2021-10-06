@@ -18,8 +18,8 @@
   "paths": {
     "/entries": {
       "post": {
-        "summary": "Register entries",
-        "description": "Route responsible for registering entries",
+        "summary": "Register entry",
+        "description": "Route responsible for registering entry",
         "tags": [
           "Entries"
         ],
@@ -61,9 +61,58 @@
       },
       "get": {
         "description": "Find all entries",
-        "summary": "Get all entries",
+        "summary": "Get all entries with options",
         "tags": [
           "Entries"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Whether the response order will be from the earliest date to the most current/future date. <br><strong>Options</strong>: ASC, DESC / Default = DESC",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit returned entries<br><strong>Options</strong>: 1, 2, 3... / By default all found are returned",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "initial_date",
+            "in": "query",
+            "description": "Get all entries after the date entered<br><strong>Example</strong>: 2021-09-015 <mark>(add \"0\" to the left of numbers)</mark><br><strong>Tip</strong>: It is possible to get entries between dates, just inform the start date and the end date (for this the start date must be less than the end date)<br><strong>Obs</strong>: If the above rule is not followed, the return is an empty array",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "final_date",
+            "in": "query",
+            "description": "Get all entries before the date entered<br><strong>Example</strong>: 2021-10-05 <mark>(add \"0\" to the left of numbers)</mark>",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "type_date",
+            "in": "query",
+            "description": "Desired date type<br><strong>Options</strong>: due_date, created_at / Default = due_date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -72,7 +121,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "$ref": "#/components/schemas/EntriesGet"
+                  "items": {
+                    "$ref": "#/components/schemas/EntriesGet"
+                  }
                 }
               }
             }
@@ -113,8 +164,8 @@
         }
       },
       "put": {
-        "summary": "Update entries",
-        "description": "Route responsible for updating entries",
+        "summary": "Update entry",
+        "description": "Route responsible for updating entry",
         "tags": [
           "Entries"
         ],
@@ -159,6 +210,274 @@
                 }
               }
             }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete entry",
+        "description": "Route responsible for delete entry",
+        "tags": [
+          "Entries"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired entry id for update",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Entrie not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/exits": {
+      "post": {
+        "summary": "Register exit",
+        "description": "Route responsible for registering exit",
+        "tags": [
+          "Exits"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntriesPost"
+              },
+              "examples": {
+                "Entries": {
+                  "value": {
+                    "name": "Luz",
+                    "description": "Paga sem atraso",
+                    "value": 357.98,
+                    "due_date": "2021-10-20"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "name, description, date and value is required"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Find all exits",
+        "summary": "Get all exits with options",
+        "tags": [
+          "Exits"
+        ],
+        "parameters": [
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Whether the response order will be from the earliest date to the most current/future date. <br><strong>Options</strong>: ASC, DESC / Default = DESC",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit returned exits<br><strong>Options</strong>: 1, 2, 3... / By default all found are returned",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "initial_date",
+            "in": "query",
+            "description": "Get all exits after the date entered<br><strong>Example</strong>: 2021-09-015 <mark>(add \"0\" to the left of numbers)</mark><br><strong>Tip</strong>: It is possible to get exits between dates, just inform the start date and the end date (for this the start date must be less than the end date)<br><strong>Obs</strong>: If the above rule is not followed, the return is an empty array",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "final_date",
+            "in": "query",
+            "description": "Get all exits before the date entered<br><strong>Example</strong>: 2021-10-05 <mark>(add \"0\" to the left of numbers)</mark>",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "type_date",
+            "in": "query",
+            "description": "Desired date type<br><strong>Options</strong>: due_date, created_at / Default = due_date",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EntriesGet"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/exits/{id}": {
+      "get": {
+        "description": "Get one by id",
+        "summary": "Get exit",
+        "tags": [
+          "Exits"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired exit id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Exit not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update exit",
+        "description": "Route responsible for updating exit",
+        "tags": [
+          "Exits"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired exit id for update",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EntriesPost"
+              },
+              "examples": {
+                "Entries": {
+                  "value": {
+                    "name": "Luz",
+                    "description": "Paga com atraso",
+                    "value": 151.99,
+                    "due_date": "2021-10-22"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "name, description, date and value is required"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/EntriesGet"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete exit",
+        "description": "Route responsible for delete exit",
+        "tags": [
+          "Exits"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Desired exit id for update",
+            "required": true
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Exit not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }

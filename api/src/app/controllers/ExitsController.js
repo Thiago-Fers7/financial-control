@@ -81,8 +81,10 @@ class ExitsController {
   async delete(req, res) {
     const { id } = req.params;
 
-    await ExitsRepository.delete(id);
-
+    const deleteOp = await ExitsRepository.delete(id);
+    if (deleteOp) {
+      return res.status(404).json({ error: 'Entrie not found' });
+    }
     res.sendStatus(204);
   }
 }

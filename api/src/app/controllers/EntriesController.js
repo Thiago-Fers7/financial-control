@@ -82,7 +82,6 @@ class EntriesController {
     const { id } = req.params;
 
     const deleteOp = await EntriesRepository.delete(id);
-
     if (deleteOp) {
       return res.status(404).json({ error: 'Entrie not found' });
     }

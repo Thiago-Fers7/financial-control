@@ -70,6 +70,7 @@ class EntriesRepository {
 
   async delete(id) {
     let deleteOp;
+
     try {
       deleteOp = await db.query('DELETE FROM entries WHERE id = $1', [id]);
     } catch (err) {

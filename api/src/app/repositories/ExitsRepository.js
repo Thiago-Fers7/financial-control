@@ -65,7 +65,13 @@ class ExitsRepository {
   }
 
   async delete(id) {
-    const deleteOp = await db.query('DELETE FROM exits WHERE id = $1', [id]);
+    let deleteOp;
+
+    try {
+      deleteOp = await db.query('DELETE FROM exits WHERE id = $1', [id]);
+    } catch (err) {
+      return 'Exit not found';
+    }
 
     return deleteOp;
   }
