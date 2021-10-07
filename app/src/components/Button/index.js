@@ -7,7 +7,6 @@ function Button({ text, type, onClick }) {
     <ContainerButton onClick={onClick} type={type}>
       {text}
     </ContainerButton>
-
   );
 }
 

@@ -2,28 +2,28 @@ import { css } from 'styled-components';
 
 const tableScrollY = css`
   &::-webkit-scrollbar {
-      margin: 1rem 0;
-      width: 0.5rem;
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
-    }
+    margin: 1rem 0;
+    width: 0.5rem;
+    border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+  }
 
-    &::-webkit-scrollbar-thumb {
-      background-color: grey;      /* color of the scroll thumb */
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
-    }
+  &::-webkit-scrollbar-thumb {
+    background-color: grey;      /* color of the scroll thumb */
+    border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
+  }
 `;
 
 const tableScrollX = css`
   &::-webkit-scrollbar {
-      margin: 1rem 0;
-      height: 0.5rem;
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
-    }
+    margin: 1rem 0;
+    height: 0.5rem;
+    border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+  }
 
-    &::-webkit-scrollbar-thumb {
-      background-color: grey;      /* color of the scroll thumb */
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
-    }
+  &::-webkit-scrollbar-thumb {
+    background-color: grey;      /* color of the scroll thumb */
+    border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
+  }
 `;
 
 const srOnly = css`

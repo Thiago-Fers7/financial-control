@@ -61,6 +61,7 @@ TableResume.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     created_at: PropTypes.string.isRequired,
+    due_date: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   })).isRequired,
 };

@@ -31,6 +31,7 @@ function Search() {
 
   function handleSubmitSearchDate(e) {
     e.preventDefault();
+    handleSetActiveSearchDate();
   }
 
   return (
@@ -53,7 +54,7 @@ function Search() {
                 <span>Buscar por nome</span>
               </label>
 
-              <Button type="submit" text="Buscar" />
+              <Button type="submit" text="Buscar" onClick={() => {}} />
             </SearchName>
           </fieldset>
         </form>
@@ -61,22 +62,22 @@ function Search() {
 
       <aside>
         <div>
-          <span onClick={handleSetActiveSearchDate} className={isActiveSearchDate && 'expand'}>
+          <span onClick={handleSetActiveSearchDate} className={isActiveSearchDate ? 'expand' : ''}>
             Opções de busca
             <span>
-              <DropDown />
+              <DropDown color="#000" />
             </span>
           </span>
         </div>
 
-        <form className={isActiveSearchDate && 'active'} onSubmit={handleSubmitSearchDate}>
+        <form className={isActiveSearchDate ? 'active' : ''} onSubmit={handleSubmitSearchDate}>
           <fieldset className="searchForName">
             <legend>Buscar por nome</legend>
 
             <SearchDate>
-              <label htmlFor="initalDate">
+              <label htmlFor="initialDate">
                 <span>Data inicial</span>
-                <input type="date" id="initalDate" />
+                <input type="date" id="initialDate" />
               </label>
               <label htmlFor="finalDate">
                 <span>Data Final</span>
@@ -91,7 +92,7 @@ function Search() {
                 </select>
               </label>
 
-              <Button type="submit" text="Aplicar" />
+              <Button type="submit" text="Aplicar" onClick={() => {}} />
             </SearchDate>
           </fieldset>
         </form>
