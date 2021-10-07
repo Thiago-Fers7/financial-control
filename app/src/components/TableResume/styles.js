@@ -99,16 +99,7 @@ export const Container = styled.div`
 
     transition: 0.4s;
 
-    &::-webkit-scrollbar {
-      margin: 1rem 0;
-      width: 0.5rem;
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: grey;      /* color of the scroll thumb */
-      border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
-    }
+    ${({ theme }) => theme.styles.tableScrollY}
 
     &.active {
       height: 20rem;

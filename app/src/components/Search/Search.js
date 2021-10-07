@@ -2,13 +2,27 @@ import { useState } from 'react';
 import { Header, SearchDate, SearchName } from './styles';
 
 import { Button } from '../Button';
+import { DropDown } from '../Icons';
 
 function Search() {
   const [nameSearch, setNameSearch] = useState('');
+  const [isActiveSearchDate, setIsActiveSearchDate] = useState(false);
 
   function handleSearchName(e) {
     const { value } = e.target;
     setNameSearch(value);
+  }
+
+  window.onresize = (e) => {
+    const width = e.target.innerWidth;
+
+    if (width > 630) {
+      setIsActiveSearchDate(false);
+    }
+  };
+
+  function handleSetActiveSearchDate() {
+    setIsActiveSearchDate(!isActiveSearchDate);
   }
 
   function handleSubmitSearchName(e) {
@@ -24,7 +38,7 @@ function Search() {
       <section>
         <form onSubmit={handleSubmitSearchName}>
           <fieldset className="searchForName">
-            <legend className="sr-only">Buscar</legend>
+            <legend>Buscar</legend>
 
             <SearchName>
               <label htmlFor="name">
@@ -46,9 +60,18 @@ function Search() {
       </section>
 
       <aside>
-        <form onSubmit={handleSubmitSearchDate}>
+        <div>
+          <span onClick={handleSetActiveSearchDate} className={isActiveSearchDate && 'expand'}>
+            Opções de busca
+            <span>
+              <DropDown />
+            </span>
+          </span>
+        </div>
+
+        <form className={isActiveSearchDate && 'active'} onSubmit={handleSubmitSearchDate}>
           <fieldset className="searchForName">
-            <legend className="sr-only">Buscar</legend>
+            <legend>Buscar por nome</legend>
 
             <SearchDate>
               <label htmlFor="initalDate">

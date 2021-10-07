@@ -9,8 +9,11 @@ const Header = styled.header`
     form {
       fieldset {
         border: none;
-
         display: flex;
+
+        legend {
+          ${({ theme }) => theme.styles.srOnly}
+        }
 
         input, select {
           padding: 0.3rem 0.6rem;
@@ -20,9 +23,10 @@ const Header = styled.header`
         }
       }
     }
+
   }
 
-  aside {
+  & > aside {
     position: absolute;
     width: min-content;
     right: -19.2rem;
@@ -31,6 +35,58 @@ const Header = styled.header`
     @media (max-width: 1420px) {
       position: sticky;
       padding: 0;
+    }
+
+    & > div {
+      display: none;
+    }
+    
+    @media (max-width: 631px) {
+      & > div {
+        display: block;
+        border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+        cursor: pointer;
+        user-select: none;
+        font-size: 1.7rem;
+        transition: 0.2s;
+
+        &:hover {
+          background: ${({ theme }) => theme.variables.colors.grayBackgroundHover};
+        }
+
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+
+          span {
+            transform: rotate(270deg);
+            transition: 0.5s;
+          }
+
+          &.expand {
+            border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+            background: ${({ theme }) => theme.variables.colors.grayBackgroundHover};
+
+            span {
+              transform: rotate(90deg);
+            }
+          }
+        }
+      }
+      
+      & > form {
+        max-height: 0;
+        transition: 0.5s;
+        overflow: hidden;
+        
+        &.active {
+          margin-top: 2.8rem;  
+          max-height: 40rem;
+          transition: 0.5s;
+        }
+      }
     }
   }
 `;
@@ -41,7 +97,16 @@ const SearchName = styled.div`
     gap: 2rem;
 
     label {
+      flex: 1;
+      max-width: 40rem;
+      min-width: 17rem;
+
       input {
+        &[type="search"]::-webkit-search-cancel-button {
+          cursor: pointer;
+        }
+        
+        width: 100%;
         background: transparent;
         padding-left: 0.3rem !important;
         border: none !important;
@@ -110,10 +175,29 @@ const SearchDate = styled.div`
       }
     }
 
-
-
     button {
       align-self: end;
+      height: 3.6rem;
+    }
+  }
+
+  @media (max-width: 631px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    label {
+      width: 100%;
+      span {
+        display: block;
+      }
+
+      select {
+        border: none;
+      }
+    }
+
+    button {
+      width: 100%;
       height: 3.6rem;
     }
   }

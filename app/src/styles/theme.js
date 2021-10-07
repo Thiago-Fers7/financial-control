@@ -1,3 +1,43 @@
+import { css } from 'styled-components';
+
+const tableScrollY = css`
+  &::-webkit-scrollbar {
+      margin: 1rem 0;
+      width: 0.5rem;
+      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: grey;      /* color of the scroll thumb */
+      border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
+    }
+`;
+
+const tableScrollX = css`
+  &::-webkit-scrollbar {
+      margin: 1rem 0;
+      height: 0.5rem;
+      border-radius: ${({ theme }) => theme.variables.others.radiusButton};
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: grey;      /* color of the scroll thumb */
+      border-radius: ${({ theme }) => theme.variables.others.radiusButton};       /* roundness of the scroll thumb */
+    }
+`;
+
+const srOnly = css`
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+`;
+
 const theme = {
   variables: {
     colors: {
@@ -23,6 +63,11 @@ const theme = {
       commomTextSize: '1.6rem',
       tableTextSize: '1.5rem',
     },
+  },
+  styles: {
+    tableScrollY,
+    tableScrollX,
+    srOnly,
   },
 };
 

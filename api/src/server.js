@@ -1,14 +1,14 @@
-const express = require('express');
 require('express-async-errors');
+const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocs = require('./swagger.json');
-
-const { createTables } = require('./database/schema');
 
 const cors = require('./app/middlewares/cors');
 const errorHandler = require('./app/middlewares/errorHandler');
 
+const { createTables } = require('./database/schema');
 const { router } = require('./routes');
+
 // Create Tables - reset: true for reset tables, false for not reset
 createTables({ reset: false });
 
@@ -22,4 +22,7 @@ app.use(cors);
 app.use(router);
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`🔥 Server started at http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`\n🔥 Server started at http://localhost:${PORT}`);
+  console.log(`📚 Documentation     http://localhost:${PORT}/api-docs`);
+});

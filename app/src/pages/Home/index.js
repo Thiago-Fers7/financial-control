@@ -5,7 +5,7 @@ import { AlertIcon, CircleIndicatorIcon } from '../../components/Icons';
 import { TableResume } from '../../components/TableResume';
 
 import { convertToReal } from '../../utils/convertToMoney';
-import { get30DaysAgo, getBigDate } from '../../utils/dateMethods';
+import { get30DaysAgo, getBigDate, getNext30Days } from '../../utils/dateMethods';
 
 import {
   Container, TransactionResume, TransactionsDetailsResume, TransactionsValues,
@@ -37,10 +37,11 @@ function Home() {
     }
   });
 
+  const afterDate = getNext30Days();
   const beforeDate = get30DaysAgo();
 
   useEffect(() => {
-    fetch(`http://localhost:3333/entries-and-exits?type_date=due_date&final_date=${beforeDate}`)
+    fetch(`http://localhost:3333/entries-and-exits?type_date=due_date&initial_date=${beforeDate}&final_date=${afterDate}`)
       .then((res) => res.json())
       .then((data) => {
         setEntries(data.entries);
