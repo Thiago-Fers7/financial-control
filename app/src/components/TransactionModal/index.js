@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { convertToReal } from '../../utils/convertToMoney';
 import { Button } from '../Button';
 import {
   Container, Modal, Form, Inputs, InputField, Buttons,
@@ -7,6 +9,48 @@ import {
 function TransactionModal({
   title, baseURL, handleModalActive, isModalActive,
 }) {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [moneyValue, setMoneyValue] = useState('');
+
+  function handleName({ target }) {
+    let { value } = target;
+
+    const MAXLENGTH = 40;
+
+    while (value.length > MAXLENGTH) {
+      value = value.substr(0, value.length - 1);
+    }
+
+    value = value.replace(/( )+/g, ' ');
+
+    setName(value);
+  }
+
+  function handleDescription({ target }) {
+    let { value } = target;
+
+    const MAXLENGTH = 100;
+
+    while (value.length > MAXLENGTH) {
+      value = value.substr(0, value.length - 1);
+    }
+
+    value = value.replace(/( )+/g, ' ');
+
+    setDescription(value);
+  }
+
+  function handleMoneyValue({ target }) {
+    let { value } = target;
+
+    value = value.replace(/\D+/g, '');
+    value = value.replace(/[0]/g, '');
+    // value = value.replace(/( )+/g, ' ');
+
+    setMoneyValue(convertToReal(+value));
+  }
+
   function handleCloseModal({ target }) {
     if (target.id === 'forCloseModal') handleModalActive(false);
   }
@@ -17,7 +61,7 @@ function TransactionModal({
   }
 
   return (
-    <Container id="forCloseModal" isActive={isModalActive} onClick={handleCloseModal}>
+    <Container id="forCloseModal" isActive={isModalActive} onMouseDown={handleCloseModal}>
       <Modal>
         <header>
           <h2>{title}</h2>
@@ -32,35 +76,41 @@ function TransactionModal({
                 <InputField htmlFor="newName">
                   <span>Nome</span>
                   <input
+                    onChange={handleName}
+                    value={name}
                     type="text"
                     id="newName"
                     autoComplete="off"
                   />
                 </InputField>
 
-                <InputField htmlFor="newName">
+                <InputField htmlFor="newDescription">
                   <span>Descrição</span>
                   <input
+                    value={description}
+                    onChange={handleDescription}
                     type="text"
-                    id="newName"
+                    id="newDescription"
                     autoComplete="off"
                   />
                 </InputField>
 
-                <InputField htmlFor="newName">
+                <InputField htmlFor="newValue">
                   <span>Valor</span>
                   <input
+                    value={moneyValue}
+                    onChange={handleMoneyValue}
                     type="text"
-                    id="newName"
+                    id="newValue"
                     autoComplete="off"
                   />
                 </InputField>
 
-                <InputField htmlFor="newName">
+                <InputField htmlFor="newDate">
                   <span>Data de Vencimento</span>
                   <input
                     type="date"
-                    id="newName"
+                    id="newDate"
                     autoComplete="off"
                   />
                 </InputField>
@@ -68,7 +118,7 @@ function TransactionModal({
 
               <Buttons>
                 <Button type="button" text="Cancelar" onClick={() => handleModalActive(false)} />
-                <Button type="submit" text="Adicionar" onClick={() => { }} />
+                <Button type="submit" text="Adicionar" />
               </Buttons>
 
             </fieldset>

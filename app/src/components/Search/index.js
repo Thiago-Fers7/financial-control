@@ -54,7 +54,7 @@ function Search() {
                 <span>Buscar por nome</span>
               </label>
 
-              <Button type="submit" text="Buscar" onClick={() => {}} />
+              <Button type="submit" text="Buscar" />
             </SearchName>
           </fieldset>
         </form>
@@ -92,7 +92,7 @@ function Search() {
                 </select>
               </label>
 
-              <Button type="submit" text="Aplicar" onClick={() => {}} />
+              <Button type="submit" text="Aplicar" />
             </SearchDate>
           </fieldset>
         </form>
