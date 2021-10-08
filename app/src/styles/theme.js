@@ -54,9 +54,13 @@ const theme = {
       nextDueDateBackground: '#ffde8266',
       exits: '#ff0000',
       redTitle: '#ff5a5a',
+      backgroundCancelButton: '#ff8181',
+      colorCancelButton: '#6a0000',
+      colorAddButton: '#1c7100',
       colorButton: '#2c1c83',
       backgroundDetailsTransactionHome: '#fff',
       borderColor: '#00000040',
+      modalContainerBackground: '#00000040',
     },
     others: {
       radiusButton: '0.4rem',

@@ -31,6 +31,19 @@ function getBigDate(data1) {
   return false;
 }
 
+function getCurrentDateForUsageInQueryParamsAPI() {
+  const date = new Date().toLocaleDateString();
+
+  const [day, month, year] = date.split('/');
+
+  return `${year}-${month}-${String(day).padStart(3, 0)}`;
+}
+
 export {
-  simpleDate, getNext30Days, corvertDate, get30DaysAgo, getBigDate,
+  simpleDate,
+  getNext30Days,
+  corvertDate,
+  get30DaysAgo,
+  getBigDate,
+  getCurrentDateForUsageInQueryParamsAPI,
 };

@@ -13,7 +13,7 @@ function Button({ text, type, onClick }) {
 export { Button };
 
 Button.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.node.isRequired,
   type: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };

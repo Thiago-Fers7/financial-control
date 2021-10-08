@@ -16,7 +16,6 @@ export const Table = styled.section`
 `;
 
 export const TableHeader = styled.div`
-  margin-top: 2rem;
   display: flex;
   
   min-width: 71.5rem;
@@ -81,7 +80,8 @@ export const TableContainer = styled.div`
 `;
 
 export const TableBody = styled.div`
-  height: 45rem;
+  min-height: 20rem;
+  max-height: 40vh;
 `;
 
 export const TableRow = styled(TableHeader)`
