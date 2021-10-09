@@ -19,6 +19,13 @@ const app = express();
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use(cors);
+
+app.use((req, res, next) => {
+  setTimeout(() => {
+    next();
+  }, 750);
+});
+
 app.use(router);
 app.use(errorHandler);
 
