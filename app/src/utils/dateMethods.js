@@ -1,5 +1,9 @@
-function simpleDate(date) {
+function simpleDate(date = new Date()) {
   return new Date(date).toLocaleDateString();
+}
+
+function simpleDateDefaultFormat(date = new Date()) {
+  return simpleDate(date).split('/').reverse().join('-');
 }
 
 function corvertDate(date) {
@@ -46,4 +50,5 @@ export {
   get30DaysAgo,
   getBigDate,
   getCurrentDateForUsageInQueryParamsAPI,
+  simpleDateDefaultFormat,
 };

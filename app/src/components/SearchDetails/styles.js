@@ -64,7 +64,7 @@ export const TableHeader = styled.div`
 
   & > span {
     font-size: 1.7rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 `;
 

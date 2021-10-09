@@ -1,63 +1,92 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { convertToReal } from '../../utils/convertToMoney';
+import { useRef, useState } from 'react';
+import { formatSimpleTextInput, formatToBRLCurrency } from '../../utils/inputs';
+import { simpleDateDefaultFormat } from '../../utils/dateMethods';
 import { Button } from '../Button';
 import {
   Container, Modal, Form, Inputs, InputField, Buttons,
 } from './styles';
 
 function TransactionModal({
-  title, baseURL, handleModalActive, isModalActive,
+  title, baseURL, handleModalActive, isModalActive, currentTransactions, setNewTransactions,
 }) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [moneyValue, setMoneyValue] = useState('');
+  const [moneyValue, setMoneyValue] = useState('R$ ');
+  const [date, setDate] = useState(simpleDateDefaultFormat());
+  const moneyValueToSend = useRef(0);
 
   function handleName({ target }) {
-    let { value } = target;
+    const { value } = target;
 
     const MAXLENGTH = 40;
+    const newValue = formatSimpleTextInput(value, MAXLENGTH);
 
-    while (value.length > MAXLENGTH) {
-      value = value.substr(0, value.length - 1);
-    }
-
-    value = value.replace(/( )+/g, ' ');
-
-    setName(value);
+    setName(newValue);
   }
 
   function handleDescription({ target }) {
-    let { value } = target;
+    const { value } = target;
 
     const MAXLENGTH = 100;
+    const newValue = formatSimpleTextInput(value, MAXLENGTH);
 
-    while (value.length > MAXLENGTH) {
-      value = value.substr(0, value.length - 1);
-    }
-
-    value = value.replace(/( )+/g, ' ');
-
-    setDescription(value);
+    setDescription(newValue);
   }
 
   function handleMoneyValue({ target }) {
-    let { value } = target;
+    const { value } = target;
 
-    value = value.replace(/\D+/g, '');
-    value = value.replace(/[0]/g, '');
-    // value = value.replace(/( )+/g, ' ');
+    const extractNumbers = value.replace(/\D+/g, '');
 
-    setMoneyValue(convertToReal(+value));
+    const newValue = formatToBRLCurrency(extractNumbers, '###.###.###,##');
+
+    moneyValueToSend.current = +(newValue.replaceAll('.', '').replace(',', '.'));
+
+    setMoneyValue(`R$ ${newValue}`);
+  }
+
+  function handleDate({ target }) {
+    const { value } = target;
+
+    setDate(value);
   }
 
   function handleCloseModal({ target }) {
     if (target.id === 'forCloseModal') handleModalActive(false);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(baseURL);
+
+    const init = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        description,
+        value: moneyValueToSend.current,
+        due_date: date,
+      }),
+    };
+
+    const response = await fetch(baseURL, init);
+
+    if (!response.ok) {
+      const { error } = await response.json();
+      return alert(error);
+    }
+
+    const data = await response.json();
+
+    const myCurrentTransactions = [...currentTransactions];
+    myCurrentTransactions.push(data);
+    myCurrentTransactions.sort((a, b) => (new Date(a.due_date) < new Date(b.due_date) ? 1 : -1));
+
+    setNewTransactions(myCurrentTransactions);
   }
 
   return (
@@ -109,6 +138,8 @@ function TransactionModal({
                 <InputField htmlFor="newDate">
                   <span>Data de Vencimento</span>
                   <input
+                    value={date}
+                    onChange={handleDate}
                     type="date"
                     id="newDate"
                     autoComplete="off"
@@ -137,4 +168,13 @@ TransactionModal.propTypes = {
   baseURL: PropTypes.string.isRequired,
   handleModalActive: PropTypes.func.isRequired,
   isModalActive: PropTypes.bool.isRequired,
+  currentTransactions: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
+    created_at: PropTypes.string.isRequired,
+    due_date: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  })).isRequired,
+  setNewTransactions: PropTypes.func.isRequired,
 };

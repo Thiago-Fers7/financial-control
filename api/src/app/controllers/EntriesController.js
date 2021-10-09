@@ -38,6 +38,7 @@ class EntriesController {
   }
 
   async store(req, res) {
+    console.log(req.body);
     const {
       name, description, value, due_date,
     } = req.body;

@@ -15,6 +15,10 @@ function Entries() {
   const [entries, setEntries] = useState([]);
   const [isModalActive, setIsModalActive] = useState(false);
 
+  function setNewTransactions(newEntries) {
+    setEntries(newEntries);
+  }
+
   function handleModalActive(forced) {
     if (typeof forced === 'boolean') return setIsModalActive(forced);
     setIsModalActive(!isModalActive);
@@ -51,6 +55,8 @@ function Entries() {
       <SearchDetails values={entries} />
 
       <TransactionModal
+        currentTransactions={entries}
+        setNewTransactions={setNewTransactions}
         isModalActive={isModalActive}
         handleModalActive={handleModalActive}
         title="Adicionar nova entrada"
