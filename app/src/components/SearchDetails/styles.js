@@ -23,35 +23,39 @@ export const TableHeader = styled.div`
   border-radius: ${({ theme }) => theme.variables.others.radiusButton};
   box-shadow: 0 0 2px #c2c2c2;
   background: white;
+  line-height: 4rem;
   
   & > span {
-    padding: 0.5rem 1rem;
-    
+    padding: 0 1rem;
+
     white-space: nowrap;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
     
     &:nth-child(1) {
-      min-width: 20rem;
+      width: 20rem;
     }
     
     &:nth-child(2) {
-      flex: 1;
+      width: 30rem;
     }
     
     &:nth-child(3) {
-      min-width: 12.78rem;
+      min-width: 17rem;
     }
     
     &:nth-child(4) {
-      min-width: 12.2rem;
+      min-width: 13.2rem;
+      text-align: center;
     }
     
     &:nth-child(5), &:nth-child(6) {
-      min-width: 9.61rem;
+      width: 10.61rem;
       text-align: center;
     }
     
     @media (max-width: 800px) {
-      
       &:nth-child(1) {
         min-width: 12rem;
       }
@@ -90,5 +94,17 @@ export const TableRow = styled(TableHeader)`
   span {
     font-size: 1.5rem;
     font-weight: normal;
+    
+    &:nth-last-child(1), &:nth-last-child(2), &:nth-last-child(3) {
+      min-height: 2.4rem;
+      
+      & > svg {
+        transform: translateY(31%);
+
+        cursor: pointer;
+        height: 2.4rem;
+        width: 2.4rem;
+      }
+    }
   }
 `;

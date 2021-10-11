@@ -11,11 +11,9 @@ class ExitsController {
         return false;
       }
 
-      return new Date(date)
-        .toLocaleDateString()
-        .split('/')
-        .reverse()
-        .join('-');
+      const [newDate] = new Date(date).toISOString().split('T');
+
+      return newDate;
     });
 
     const exits = await ExitsRepository.findAll({

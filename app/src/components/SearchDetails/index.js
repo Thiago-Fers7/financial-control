@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { convertToReal } from '../../utils/convertToMoney';
 import { simpleDate } from '../../utils/dateMethods';
+import { EditIcon, RemoveIcon } from '../Icons';
 import {
   Table, TableHeader, TableContainer, TableBody, TableRow,
 } from './styles';
@@ -24,8 +25,8 @@ function SearchDetails({ values }) {
               <span>{value.description}</span>
               <span>{convertToReal(value.value)}</span>
               <span>{simpleDate(value.due_date)}</span>
-              <span>/</span>
-              <span>-</span>
+              <span><EditIcon /></span>
+              <span><RemoveIcon color="#f00" /></span>
             </TableRow>
           ))}
         </TableBody>

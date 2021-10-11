@@ -11,11 +11,9 @@ class EntriesController {
         return false;
       }
 
-      return new Date(date)
-        .toLocaleDateString()
-        .split('/')
-        .reverse()
-        .join('-');
+      const [newDate] = new Date(date).toISOString().split('T');
+
+      return newDate;
     });
 
     const entries = await EntriesRepository.findAll({
@@ -38,7 +36,6 @@ class EntriesController {
   }
 
   async store(req, res) {
-    console.log(req.body);
     const {
       name, description, value, due_date,
     } = req.body;
