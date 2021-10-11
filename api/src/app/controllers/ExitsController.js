@@ -40,11 +40,11 @@ class ExitsController {
       name, description, value, due_date,
     } = req.body;
 
-    if (!name || !description || !value || !due_date) {
+    if (!name || !description || (!value && value !== 0) || !due_date) {
       return res.status(400).json({ error: 'Informe o nome, descrição, data de vencimento e valor antes de continuar!' });
     }
 
-    if (!Number(value)) {
+    if (!Number(value) && Number.isNaN(+value) && value !== 0) {
       return res.status(400).json({ error: 'Valor digitado não é válido!' });
     }
 
