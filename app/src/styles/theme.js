@@ -54,6 +54,7 @@ const theme = {
       nextDueDateBackground: '#ffde8266',
       exits: '#ff0000',
       redTitle: '#ff5a5a',
+      inputErrorMessage: '#f00',
       backgroundCancelButton: '#ff8181',
       colorCancelButton: '#6a0000',
       colorAddButton: '#1c7100',

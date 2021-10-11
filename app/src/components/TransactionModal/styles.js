@@ -70,6 +70,36 @@ export const InputField = styled.div`
 
     font-size: 1.5rem;
   }
+
+  strong {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: ${({ theme }) => theme.variables.colors.inputErrorMessage};
+
+    animation: alert 0.3s 1 reverse; 
+
+    @keyframes alert {
+      0% {
+        transform: translateX(-1rem);
+      }
+
+      25% {
+        transform: translateX(1rem)
+      }
+
+      50% {
+        transform: translateX(-1rem)
+      }
+
+      75% {
+        transform: translateX(1rem)
+      }
+
+      100% {
+        transform: translateX(0)
+      }
+    }
+  }
 `;
 
 export const Buttons = styled.div` 
@@ -81,12 +111,12 @@ export const Buttons = styled.div`
     padding: 1rem;
     text-transform: uppercase;
     
-    &:first-child {
+    &[type="button"] {
       background: ${({ theme }) => theme.variables.colors.backgroundCancelButton};
       color: ${({ theme }) => theme.variables.colors.colorCancelButton};
     }
 
-    &:last-child {
+    &[type="submit"] {
       background: ${({ theme }) => theme.variables.colors.greenLight};
       color: ${({ theme }) => theme.variables.colors.colorAddButton};
     }

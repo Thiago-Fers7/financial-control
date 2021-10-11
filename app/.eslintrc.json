@@ -27,6 +27,7 @@
         "react/jsx-no-bind": "off",
         "react/destructuring-assignment": "off",
         "consistent-return": "off",
+        "max-len": "off",
         "no-extend-native": "off"
     }
 }

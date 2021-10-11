@@ -52,6 +52,7 @@ function Entries() {
           onClick={handleModalActive}
         />
       </NewTrasactionButton>
+
       <SearchDetails values={entries} />
 
       <TransactionModal

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatSimpleTextInput, formatToBRLCurrency } from '../../utils/inputs';
 import { simpleDateDefaultFormat } from '../../utils/dateMethods';
 import { Button } from '../Button';
@@ -10,11 +10,38 @@ import {
 function TransactionModal({
   title, baseURL, handleModalActive, isModalActive, currentTransactions, setNewTransactions,
 }) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [moneyValue, setMoneyValue] = useState('R$ ');
-  const [date, setDate] = useState(simpleDateDefaultFormat());
+  const initialStateInputValues = {
+    name: '',
+    description: '',
+    moneyValue: 'R$ ',
+    date: simpleDateDefaultFormat(),
+  };
+
+  const initialStateIsInputValues = {
+    isName: false,
+    isDescription: false,
+    isMoneyValue: true,
+    isDate: true,
+  };
+
+  const [{
+    name, description, moneyValue, date,
+  }, setInputValue] = useState(initialStateInputValues);
+
   const moneyValueToSend = useRef(0);
+
+  const [{
+    isName, isDescription, isMoneyValue, isDate,
+  }, setIsInputValue] = useState(initialStateIsInputValues);
+
+  const [isInvalidValues, setIsInvalidValues] = useState(true);
+  useEffect(() => {
+    if (isName && isDescription && isDate && isMoneyValue) {
+      setIsInvalidValues(false);
+    } else {
+      setIsInvalidValues(true);
+    }
+  }, [isName, isDescription, isDate, isMoneyValue]);
 
   function handleName({ target }) {
     const { value } = target;
@@ -22,7 +49,13 @@ function TransactionModal({
     const MAXLENGTH = 40;
     const newValue = formatSimpleTextInput(value, MAXLENGTH);
 
-    setName(newValue);
+    if (newValue && newValue !== ' ') {
+      setIsInputValue((prevState) => ({ ...prevState, isName: true }));
+    } else {
+      setIsInputValue((prevState) => ({ ...prevState, isName: false }));
+    }
+
+    setInputValue((prevState) => ({ ...prevState, name: newValue }));
   }
 
   function handleDescription({ target }) {
@@ -31,7 +64,13 @@ function TransactionModal({
     const MAXLENGTH = 100;
     const newValue = formatSimpleTextInput(value, MAXLENGTH);
 
-    setDescription(newValue);
+    if (newValue && newValue !== ' ') {
+      setIsInputValue((prevState) => ({ ...prevState, isDescription: true }));
+    } else {
+      setIsInputValue((prevState) => ({ ...prevState, isDescription: false }));
+    }
+
+    setInputValue((prevState) => ({ ...prevState, description: newValue }));
   }
 
   function handleMoneyValue({ target }) {
@@ -43,13 +82,29 @@ function TransactionModal({
 
     moneyValueToSend.current = +(newValue.replaceAll('.', '').replace(',', '.'));
 
-    setMoneyValue(`R$ ${newValue}`);
+    if (!Number.isNaN(Number(moneyValueToSend.current))) {
+      setIsInputValue((prevState) => ({ ...prevState, isMoneyValue: true }));
+    } else {
+      setIsInputValue((prevState) => ({ ...prevState, isMoneyValue: true }));
+    }
+
+    setInputValue((prevState) => ({ ...prevState, moneyValue: `R$ ${newValue}` }));
   }
 
   function handleDate({ target }) {
     const { value } = target;
 
-    setDate(value);
+    const dateValue = new Date(value);
+
+    const isDateValue = dateValue.toString() !== 'Invalid Date';
+
+    if (isDateValue) {
+      setIsInputValue((prevState) => ({ ...prevState, isDate: true }));
+    } else {
+      setIsInputValue((prevState) => ({ ...prevState, isDate: true }));
+    }
+
+    setInputValue((prevState) => ({ ...prevState, date: value }));
   }
 
   function handleCloseModal({ target }) {
@@ -58,6 +113,10 @@ function TransactionModal({
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    if (isInvalidValues) {
+      return;
+    }
 
     const init = {
       method: 'POST',
@@ -73,20 +132,29 @@ function TransactionModal({
       }),
     };
 
-    const response = await fetch(baseURL, init);
+    fetch(baseURL, init)
+      .then((response) => {
+        if (!response.ok) {
+          const { error } = response.json();
+          throw error.toString();
+        }
 
-    if (!response.ok) {
-      const { error } = await response.json();
-      return alert(error);
-    }
+        return response.json();
+      })
+      .then((data) => {
+        const myCurrentTransactions = [...currentTransactions];
+        myCurrentTransactions.push(data);
+        myCurrentTransactions.sort((a, b) => (new Date(a.due_date) < new Date(b.due_date) ? 1 : -1));
 
-    const data = await response.json();
-
-    const myCurrentTransactions = [...currentTransactions];
-    myCurrentTransactions.push(data);
-    myCurrentTransactions.sort((a, b) => (new Date(a.due_date) < new Date(b.due_date) ? 1 : -1));
-
-    setNewTransactions(myCurrentTransactions);
+        setNewTransactions(myCurrentTransactions);
+      }).catch((err) => {
+        alert(err);
+      })
+      .finally(() => {
+        setInputValue(initialStateInputValues);
+        setIsInputValue(initialStateIsInputValues);
+        console.log('finalizado');
+      });
   }
 
   return (
@@ -103,7 +171,7 @@ function TransactionModal({
 
               <Inputs>
                 <InputField htmlFor="newName">
-                  <span>Nome</span>
+                  <span>Nome *</span>
                   <input
                     onChange={handleName}
                     value={name}
@@ -111,10 +179,13 @@ function TransactionModal({
                     id="newName"
                     autoComplete="off"
                   />
+                  {!isName && name !== '' && (
+                    <strong>Preecha o campo antes de continuar!</strong>
+                  )}
                 </InputField>
 
                 <InputField htmlFor="newDescription">
-                  <span>Descrição</span>
+                  <span>Descrição *</span>
                   <input
                     value={description}
                     onChange={handleDescription}
@@ -122,6 +193,9 @@ function TransactionModal({
                     id="newDescription"
                     autoComplete="off"
                   />
+                  {!isDescription && description !== '' && (
+                    <strong>Preecha o campo antes de continuar!</strong>
+                  )}
                 </InputField>
 
                 <InputField htmlFor="newValue">
@@ -136,7 +210,7 @@ function TransactionModal({
                 </InputField>
 
                 <InputField htmlFor="newDate">
-                  <span>Data de Vencimento</span>
+                  <span>Data de Vencimento *</span>
                   <input
                     value={date}
                     onChange={handleDate}
@@ -144,12 +218,17 @@ function TransactionModal({
                     id="newDate"
                     autoComplete="off"
                   />
+                  {!isDate && (
+                    <strong>Preecha o campo antes de continuar!</strong>
+                  )}
                 </InputField>
               </Inputs>
 
               <Buttons>
                 <Button type="button" text="Cancelar" onClick={() => handleModalActive(false)} />
-                <Button type="submit" text="Adicionar" />
+                {!isInvalidValues && (
+                  <Button type="submit" text="Adicionar" />
+                )}
               </Buttons>
 
             </fieldset>

@@ -21,7 +21,6 @@ export const TableHeader = styled.div`
   min-width: 71.5rem;
   
   border-radius: ${({ theme }) => theme.variables.others.radiusButton};
-  box-shadow: 0 0 2px #c2c2c2;
   background: white;
   line-height: 4rem;
   
@@ -51,7 +50,7 @@ export const TableHeader = styled.div`
     }
     
     &:nth-child(5), &:nth-child(6) {
-      width: 10.61rem;
+      width: 11.61rem;
       text-align: center;
     }
     
@@ -90,6 +89,10 @@ export const TableBody = styled.div`
 
 export const TableRow = styled(TableHeader)`
   margin-top: 0.5rem;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
 
   span {
     font-size: 1.5rem;
