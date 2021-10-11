@@ -3,12 +3,15 @@ import { theme } from './styles/theme';
 
 import { Routes } from './routes';
 import { GlobalStyles } from './styles/global';
+import { NotifyModalContextProvider } from './contexts/NotifyModalContext';
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Routes />
+      <NotifyModalContextProvider>
+        <Routes />
+      </NotifyModalContextProvider>
     </ThemeProvider>
   );
 }

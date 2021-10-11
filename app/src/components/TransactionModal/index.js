@@ -1,15 +1,20 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { formatSimpleTextInput, formatToBRLCurrency } from '../../utils/inputs';
 import { simpleDateDefaultFormat } from '../../utils/dateMethods';
 import { Button } from '../Button';
 import {
   Container, Modal, Form, Inputs, InputField, Buttons,
 } from './styles';
+import { NotifyModalContext } from '../../contexts/NotifyModalContext';
 
 function TransactionModal({
   title, baseURL, handleModalActive, isModalActive, currentTransactions, setNewTransactions,
 }) {
+  const { handleSetNotify, handleMessageNotification } = useContext(NotifyModalContext);
+
   const initialStateInputValues = {
     name: '',
     description: '',
@@ -132,11 +137,12 @@ function TransactionModal({
       }),
     };
 
+    handleSetNotify(true);
     fetch(baseURL, init)
       .then((response) => {
         if (!response.ok) {
           const { error } = response.json();
-          throw error.toString();
+          throw error;
         }
 
         return response.json();
@@ -147,13 +153,20 @@ function TransactionModal({
         myCurrentTransactions.sort((a, b) => (new Date(a.due_date) < new Date(b.due_date) ? 1 : -1));
 
         setNewTransactions(myCurrentTransactions);
+        handleMessageNotification('Nova transação adicionada!');
       }).catch((err) => {
-        alert(err);
+        if (err) {
+          handleMessageNotification('Falha ao adicionar nova transação');
+        } else {
+          handleMessageNotification('Erro inesperado, tente novamente mais tarde!');
+        }
       })
       .finally(() => {
         setInputValue(initialStateInputValues);
         setIsInputValue(initialStateIsInputValues);
-        console.log('finalizado');
+
+        handleModalActive(false);
+        handleSetNotify(false);
       });
   }
 

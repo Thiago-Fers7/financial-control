@@ -6,6 +6,7 @@ import { DueDate } from './pages/DueDate';
 import { Entries } from './pages/Entries';
 import { Exits } from './pages/Exits';
 import { NotFound } from './pages/NotFound/Index';
+import { NotifyModal } from './components/NotifyModal';
 
 function Routes() {
   return (
@@ -20,6 +21,8 @@ function Routes() {
         <Route path="*" component={NotFound} />
         <Route path="*" component={NotFound} />
       </Switch>
+
+      <NotifyModal />
     </BrowserRouter>
   );
 }

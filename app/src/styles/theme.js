@@ -53,6 +53,8 @@ const theme = {
       dueDate: '#ff6b00',
       nextDueDateBackground: '#ffde8266',
       exits: '#ff0000',
+      loadColor1: '#c2c2c2',
+      loadColor2: '#2c1c83',
       redTitle: '#ff5a5a',
       inputErrorMessage: '#f00',
       backgroundCancelButton: '#ff8181',
